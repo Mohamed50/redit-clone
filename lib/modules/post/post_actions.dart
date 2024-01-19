@@ -37,4 +37,8 @@ class PostActions {
   static downVoteComment(String id) {
     Get.find<PostController>().downVoteComment(id);
   }
+
+  static addCommentPressed(String text) {
+    Get.find<PostController>().addComment(text);
+  }
 }

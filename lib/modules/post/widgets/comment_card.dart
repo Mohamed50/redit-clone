@@ -32,6 +32,7 @@ class CommentCard extends StatelessWidget {
           Text(comment.content),
           const SizedBox(height: 8.0),
           Row(
+            mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               FaIcon(
@@ -43,7 +44,7 @@ class CommentCard extends StatelessWidget {
               Row(
                 children: [
                   FaIcon(
-                    FontAwesomeIcons.reply,
+                    Icons.reply,
                     size: 16,
                     color: Colors.grey.shade500,
                   ),
@@ -97,16 +98,18 @@ class CommentCard extends StatelessWidget {
                   color: Colors.grey,
                   margin: const EdgeInsets.only(left: 0.0, top: 8.0, bottom: 8.0),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: comment.replies.map(
-                    (reply) {
-                      return CommentCard(
-                        comment: reply,
-                        indentLevel: indentLevel + 1,
-                      );
-                    },
-                  ).toList(),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: comment.replies.map(
+                      (reply) {
+                        return CommentCard(
+                          comment: reply,
+                          indentLevel: indentLevel + 1,
+                        );
+                      },
+                    ).toList(),
+                  ),
                 )
               ],
             ),

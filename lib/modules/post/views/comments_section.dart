@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:reddit_clone_flutter/modules/post/models/comment_model.dart';
 
+import '../widgets/add_comment_widget.dart';
 import '../widgets/comment_card.dart';
 
 class CommentsSection extends StatelessWidget {
@@ -18,18 +19,19 @@ class CommentsSection extends StatelessWidget {
   final String userAvatarUrl;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(topLeft: Radius.circular(16), topRight: Radius.circular(16)),
-      ),
-      child: Stack(
+    return BottomSheet(
+      enableDrag: true,
+      showDragHandle: true,
+      onClosing: () {},
+      
+      backgroundColor: const Color(0xFFF1F1F1),
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(16.0))),
+      builder: (context) => Stack(
         alignment: Alignment.topCenter,
         children: [
           SingleChildScrollView(
             child: Column(
               children: [
-                const SizedBox(height: 24),
                 Container(
                   padding: const EdgeInsets.all(16),
                   width: MediaQuery.of(context).size.width,
@@ -72,54 +74,8 @@ class CommentsSection extends StatelessWidget {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Container(
-              width: 36,
-              height: 4,
-              color: Colors.grey.shade200,
-            ),
-          ),
-          const AddCommentWidget()
+          AddCommentWidget()
         ],
-      ),
-    );
-  }
-}
-
-class AddCommentWidget extends StatelessWidget {
-  const AddCommentWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.bottomCenter,
-      child: Container(
-        padding: const EdgeInsets.all(8.0),
-        width: MediaQuery.of(context).size.width,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black38,
-              spreadRadius: 0.4,
-              blurRadius: 2,
-              offset: Offset(-0.5, 0),
-            )
-          ],
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(12), topRight: Radius.circular(12))
-        ),
-        child: TextFormField(
-          decoration: InputDecoration(
-            hintText: 'Add a comment',
-            filled: true,
-            fillColor: Colors.grey.shade100,
-            icon: FaIcon(FontAwesomeIcons.image, color: Colors.grey.shade400),
-            border: InputBorder.none,
-          ),
-        ),
       ),
     );
   }

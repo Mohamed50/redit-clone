@@ -7,9 +7,12 @@ import 'package:reddit_clone_flutter/modules/post/models/post_model.dart';
 import 'package:reddit_clone_flutter/modules/post/post_services.dart';
 import 'package:video_player/video_player.dart';
 
+import '../../core/models/user.dart';
+
 class PostController extends GetxController {
   PostController({required this.postServices}) {
     post = postServices.getPostData('0');
+    currentUser = User(id: '1', name: 'CurrentUser');
     videoPlayerController = VideoPlayerController.asset(post.videoUrl);
     videoPlayerController.initialize().then((value) {});
     videoPlayerController.play();
@@ -21,12 +24,14 @@ class PostController extends GetxController {
 
   late PostModel post;
 
+  late User currentUser;
+
   RxBool isVideoPlaying = false.obs;
 
   @override
-  Future<void> onInit() async {
+  onInit() {
     super.onInit();
-    post = await postServices.getPostData('0');
+    post = postServices.getPostData('0');
   }
 
   upVotePost() {
@@ -77,5 +82,9 @@ class PostController extends GetxController {
         throw Exception('Failed');
       }
     }
+  }
+
+  addComment(String content) {
+    post.comments.add(postServices.sendComment(currentUser.id, content));
   }
 }

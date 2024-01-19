@@ -16,7 +16,7 @@ class PostPage extends GetWidget<PostController> {
       body: SafeArea(
         child: GestureDetector(
           onTap: () {
-            isSettingsOverlayOpen.value = !isSettingsOverlayOpen.value;
+            //isSettingsOverlayOpen.value = !isSettingsOverlayOpen.value;
           },
           child: Stack(
             children: [
