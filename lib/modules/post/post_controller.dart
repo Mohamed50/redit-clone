@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:reddit_clone_flutter/core/enums.dart';
+import 'package:reddit_clone_flutter/core/utils.dart';
 import 'package:reddit_clone_flutter/modules/post/models/comment_model.dart';
 import 'package:reddit_clone_flutter/modules/post/models/post_model.dart';
 import 'package:reddit_clone_flutter/modules/post/post_services.dart';
@@ -13,9 +14,12 @@ class PostController extends GetxController {
   PostController({required this.postServices}) {
     post = postServices.getPostData('0');
     currentUser = User(id: '1', name: 'CurrentUser');
-    videoPlayerController = VideoPlayerController.asset(post.videoUrl);
-    videoPlayerController.initialize().then((value) {});
+    videoPlayerController = VideoPlayerController.networkUrl(Uri.parse(post.videoUrl));
+    videoPlayerController.initialize().then((value) {
+      update();
+    });
     videoPlayerController.play();
+    startControllerListener();
   }
 
   final PostServices postServices;
@@ -27,6 +31,12 @@ class PostController extends GetxController {
   late User currentUser;
 
   RxBool isVideoPlaying = false.obs;
+
+  Rx<double> sliderValue = 0.0.obs;
+  RxString currentVideoTime = '00:00'.obs;
+  RxBool isPlaying = false.obs;
+  RxBool isMuted = false.obs;
+  RxBool isCommentTyping = false.obs;
 
   @override
   onInit() {
@@ -86,5 +96,56 @@ class PostController extends GetxController {
 
   addComment(String content) {
     post.comments.add(postServices.sendComment(currentUser.id, content));
+    update();
+  }
+
+  startControllerListener() {
+    videoPlayerController.addListener(() {
+      isPlaying.value = videoPlayerController.value.isPlaying;
+      currentVideoTime.value = Utils.durationToTime(videoPlayerController.value.position);
+      sliderValue.value = videoPlayerController.value.position.inSeconds.toDouble();
+    });
+  }
+
+  void seekToSecond(Duration position) {
+    videoPlayerController.seekTo(position);
+  }
+
+  @override
+  void onClose() {
+    videoPlayerController.dispose();
+    super.onClose();
+  }
+
+  void pause() {
+    videoPlayerController.pause();
+  }
+
+  void play() {
+    videoPlayerController.play();
+  }
+
+  void handleVolume() {
+    if (isMuted.value) {
+      unMute();
+    } else {
+      mute();
+    }
+  }
+
+  void mute() {
+    isMuted.value = true;
+    videoPlayerController.setVolume(0);
+  }
+
+  void unMute() {
+    isMuted.value = false;
+    videoPlayerController.setVolume(1);
+  }
+
+  void onSliderValueChange(double value) {
+    log(value.toString());
+    sliderValue.value = value;
+    seekToSecond(Duration(seconds: value.toInt()));
   }
 }

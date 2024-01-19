@@ -3,6 +3,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:reddit_clone_flutter/modules/post/models/comment_model.dart';
 import 'package:reddit_clone_flutter/modules/post/post_actions.dart';
+import 'package:reddit_clone_flutter/modules/post/post_controller.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../views/comments_section.dart';
 
@@ -31,28 +33,35 @@ class VideoEngagementView extends StatelessWidget {
       children: [
         Column(
           children: [
-            GestureDetector(
-                onTap: () {
-                  PostActions.upVotePost();
-                },
-                child: const FaIcon(FontAwesomeIcons.arrowUpLong, color: Colors.white)),
+            InkWell(
+              onTap: () {
+                PostActions.upVotePost();
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(horizontal:8.0),
+                child: Center(child: FaIcon(FontAwesomeIcons.arrowUpLong, color: Colors.white)),
+              ),
+            ),
             const SizedBox(height: 8.0),
-            Text(numberOfVotes, style: const TextStyle(color: Colors.white)),
+            Text(numberOfVotes, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8.0),
-            GestureDetector(
+            InkWell(
                 onTap: () {
                   PostActions.downVotePost();
                 },
-                child: const FaIcon(FontAwesomeIcons.arrowDownLong, color: Colors.white)),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal:8.0),
+                  child: FaIcon(FontAwesomeIcons.arrowDownLong, color: Colors.white),
+                )),
           ],
         ),
         const SizedBox(height: 24),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            GestureDetector(
-              onTap: () {
-                Get.bottomSheet(
+            InkWell(
+              onTap: () async {
+                await Get.bottomSheet(
                   CommentsSection(
                     comments: comments,
                     description: postDesc,
@@ -62,15 +71,19 @@ class VideoEngagementView extends StatelessWidget {
                   enterBottomSheetDuration: const Duration(milliseconds: 500),
                   exitBottomSheetDuration: const Duration(milliseconds: 500),
                 );
+                Get.find<PostController>().isCommentTyping.value = false;
               },
               child: const FaIcon(FontAwesomeIcons.message, color: Colors.white),
             ),
-            const SizedBox(height: 8.0),
-            Text(numberOfComments, style: const TextStyle(color: Colors.white))
+            const SizedBox(height: 6.0),
+            Text(numberOfComments, style: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold))
           ],
         ),
         const SizedBox(height: 16.0),
-        IconButton(onPressed: () {}, icon: const FaIcon(FontAwesomeIcons.arrowUpFromBracket), color: Colors.white),
+        IconButton(onPressed: () {
+          Share.share(postDesc);
+
+        }, icon: const FaIcon(FontAwesomeIcons.arrowUpFromBracket), color: Colors.white),
       ],
     );
   }

@@ -6,7 +6,7 @@ import 'package:reddit_clone_flutter/modules/post/views/video_settings_overlay.d
 import 'package:video_player/video_player.dart';
 
 class PostPage extends GetWidget<PostController> {
-  RxBool isSettingsOverlayOpen = true.obs;
+  final RxBool isSettingsOverlayOpen = true.obs;
 
   PostPage({super.key});
   @override
@@ -21,11 +21,13 @@ class PostPage extends GetWidget<PostController> {
           child: Stack(
             children: [
               Center(
-                child: AspectRatio(
-                  aspectRatio:
-                      controller.videoPlayerController.value.aspectRatio,
-                  child: VideoPlayer(
-                    controller.videoPlayerController,
+                child: GetBuilder<PostController>(
+                  builder:(controller) => AspectRatio(
+                    aspectRatio:
+                        controller.videoPlayerController.value.aspectRatio,
+                    child: VideoPlayer(
+                      controller.videoPlayerController,
+                    ),
                   ),
                 ),
               ),
@@ -33,7 +35,6 @@ class PostPage extends GetWidget<PostController> {
                 () => Visibility(
                   visible: isSettingsOverlayOpen.value,
                   child: VideoSettingsOverlay(
-                    controller: controller.videoPlayerController,
                     postModel: controller.post,
                   ),
                 ),

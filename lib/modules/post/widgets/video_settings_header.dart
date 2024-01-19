@@ -21,14 +21,14 @@ class VideoSettingsHeader extends StatelessWidget {
           children: [
             CircleAvatar(
               backgroundImage: NetworkImage(channelImageUrl),
-              radius: 8,
+              radius: 10,
             ),
             const SizedBox(
-              width: 4.0,
+              width: 6.0,
             ),
             Text(
               'r/$channelName',
-              style: const TextStyle(color: Colors.white),
+              style: const TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.w700),
             ),
           ],
         ),

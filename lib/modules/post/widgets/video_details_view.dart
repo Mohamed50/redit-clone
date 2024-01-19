@@ -24,12 +24,12 @@ class VideoDetailsView extends StatelessWidget {
             children: [
               CircleAvatar(
             backgroundImage: NetworkImage(userPicUrl),
-            radius: 8,
+            radius: 10,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 6),
               Text(
                 username,
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -39,7 +39,7 @@ class VideoDetailsView extends StatelessWidget {
             softWrap: false,
             overflow: TextOverflow.ellipsis,
             maxLines: 3,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white, fontSize: 15,fontWeight: FontWeight.bold ),
           ),
         ],
       ),

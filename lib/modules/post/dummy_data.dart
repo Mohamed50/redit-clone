@@ -1,6 +1,4 @@
-import 'package:reddit_clone_flutter/core/constants.dart';
 import 'package:reddit_clone_flutter/modules/post/models/post_model.dart';
-
 import 'models/comment_model.dart';
 
 PostModel dummyPost = PostModel(
@@ -10,7 +8,7 @@ PostModel dummyPost = PostModel(
   channelPic: 'https://picsum.photos/8',
   description:
       'After a year of collecting parts for this build, I present my finished Heavy-9 (Thocky typing test at the end!)',
-  videoUrl: Constants.localVideoString,
+  videoUrl: 'https://sample-videos.com/video321/mp4/720/big_buck_bunny_720p_20mb.mp4',
   numberOfVotes: 15,
   numberOfComments: dummyComments.length,
   userId: 'user456',

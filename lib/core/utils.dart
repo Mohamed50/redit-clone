@@ -4,7 +4,8 @@ class Utils {
   }
 
   static double durationPercentage(Duration totalDuration, Duration currentDuration) {
-    return (currentDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
+    final result = (currentDuration.inMilliseconds / totalDuration.inMilliseconds) * 100;
+    return result.isNaN ? 0.0 : result;
   }
 
   static String calculateTimeDifferenceFromDateTime(DateTime targetTime) {
